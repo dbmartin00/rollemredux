@@ -16,7 +16,7 @@ sub showChannelSGScreen()
         rolls[StrI(i)] = 0
     end for
     
-    for j = 1 to 25000 Step 1
+    for j = 1 to 75000 Step 1
         roll = Rnd(count)
         rolls[StrI(roll)] = rolls[StrI(roll)] + 1
     end for
