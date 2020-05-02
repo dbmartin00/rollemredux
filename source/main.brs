@@ -64,7 +64,7 @@ sub showChannelSGScreen()
     blue = &h007C9C7F
     gray = &hCCCDCCFF
     black= &h000000FF
-    blue = &h74AAD2FF
+    blue = &h779DC2FF
     white = &hD5D6D5FF
     dark_gray = &h919498FF
     
