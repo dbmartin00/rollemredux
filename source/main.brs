@@ -61,20 +61,22 @@ sub showChannelSGScreen()
     x_axis_width = width - padding - padding
     
     red =  &hFF0000FF
-    blue = &h007C9CFF
+    blue = &h007C9C7F
     gray = &hCCCDCCFF
     black= &h000000FF
-    blue = &h5a90c6FF
+    blue = &h74AAD2FF
     white = &hD5D6D5FF
+    dark_gray = &h919498FF
     
     fontRegistry = CreateObject("roFontRegistry")
     font = fontRegistry.GetDefaultFont()
     
     screen.DrawRect(0, 0, width, height, white)
-    'screen.DrawRect(padding, padding, x_axis_width, y_axis_height, blue)
+    screen.DrawRect(padding - 25, padding - 25, x_axis_width + 50, y_axis_height + 50, dark_gray)
+    screen.DrawRect(padding, padding, x_axis_width, y_axis_height, white)
     screen.DrawLine(padding -1,padding -1, padding + x_axis_width + 1, padding - 1, black)  
     screen.DrawLine( padding + x_axis_width + 1, padding - 1, padding + x_axis_width + 1, padding + y_axis_height + 1, black)  
-    screen.DrawLine(padding + x_axis_width + 1, padding + y_axis_height + 1, padding - 1, padding + y_axis_height + 1, black)  
+    screen.DrawLine(padding + x_axis_width + 1, padding + y_axis_height + 1, padding - 1, padding + y_axis_height + 1, black)      
     screen.DrawLine(padding - 1, padding + y_axis_height + 1, padding - 1, padding - 1, black)  
             
     roll_width = x_axis_width / count    
@@ -94,14 +96,14 @@ sub showChannelSGScreen()
         print StrI(upper_x) + ", " + StrI(upper_y) + " (" + StrI(roll_width) + " x " + StrI(roll_height) + ")"
         screen.DrawRect(upper_x,upper_y, roll_width, roll_height, blue)
         screen.DrawLine(upper_x,upper_y,upper_x + roll_width,upper_y, black)
-        screen.DrawLine(upper_x,upper_y,upper_x, y_axis_height + 100,black)
+        screen.DrawLine(upper_x,upper_y,upper_x, y_axis_height + 100, black)
         screen.DrawLine(upper_x + roll_width, upper_y, upper_x + roll_width, y_axis_height + 100, black)
         
         text_y = upper_y + 25
         screen.DrawText(StrI(i) + " (" + StrI(rolls[StrI(i)]) + " )", upper_x + (roll_width / 2) - 100, text_y, black, font)
     end for
             
-    screen.DrawText("The winner is " + StrI(max) + " with " + StrI(rolls[StrI(max)]) + " rolls!", (width / 2) - 500, 50, red, font)
+    screen.DrawText("The winner is " + StrI(max) + " with " + StrI(rolls[StrI(max)]) + " rolls!", (width / 2) - 500, 25, red, font)
     screen.Finish()
     
     while(true)
