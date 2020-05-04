@@ -6,12 +6,103 @@ end sub
 
 sub showChannelSGScreen()
     screen = CreateObject("roScreen")
+    port = CreateObject("roMessagePort")
+    screen.SetMessagePort(port)
+
+    width = screen.GetWidth()
+    height = screen.GetHeight()
+    white = &hDDDDDDFF
+    dark_gray = &h919498FF
+    green = &h00FF00FF
+    black = &h000000FF
+    blue = &h007C9C7F
+        
+    fontRegistry = CreateObject("roFontRegistry")
+    font = fontRegistry.GetDefaultFont()
+    instructionFont = fontRegistry.GetDefaultFont(90,true,false)
+    
+    print "1"
+    number_width = width / 4  
+    number_height = height / 2
+     screen.finish()
+  
+    print "2"
+    print "3"
+    state = 2
+    notFinished = true
+    offset = 40
+    while notFinished
+        screen.DrawRect(0, 0, width,height,white)  
+        screen.DrawText("CHOOSE A DIE",width / 4 + 100, height / 4,blue, instructionFont)
+        upper_x = 0
+        upper_y = number_height - 25
+        if state = 0
+            upper_x = 0 + (number_width / 2) - offset
+        else if state = 1
+            upper_x = number_width + (number_width / 2) - offset
+        else if state = 2
+            upper_x = (number_width * 2) + (number_width / 2) - offset
+        else if state = 3
+            upper_x = (number_width * 3) + (number_width / 2) - offset
+        else
+            print "unexpected state: " + StrI(state)
+        end if
+        screen.DrawRect(upper_x, upper_y,100,100,dark_gray)
+        screen.DrawText("2", 0 + (number_width / 2), number_height, black, font)
+        screen.DrawText("6", number_width + (number_width / 2), number_height, black, font)
+        screen.DrawText("8", (number_width * 2) + (number_width / 2), number_height, black, font)
+        screen.DrawText("20", (number_width * 3) + (number_width / 2), number_height, black, font)   
+        screen.finish()
+        
+        msg = wait(0, port) ' wait for a message
+        if type(msg) = "roUniversalControlEvent" then
+            if(msg.isPress()) then
+                print "key:" + StrI(msg.GetKey())
+                if msg.getKey() = 4
+                    if state > 0 
+                        state = state - 1
+                    endif
+                else if msg.getKey() = 3
+                    if state > 0
+                        state = state - 1
+                    endif
+                else if msg.getKey() = 5
+                    if state < 3
+                        state = state + 1
+                    endif
+                else if msg.getKey() = 2
+                    if state < 3
+                        state = state + 1
+                    endif
+                else if msg.getKey() = 6
+                    notFinished = false
+                endif
+            endif         
+        endif
+    end while
+    
+    count = 8
+    if(state = 0)
+        count = 2 
+    else if (state = 1)
+        count = 6
+    else if (state = 2) 
+        count = 8
+    else if (state = 3)
+        count = 20
+    else
+        print "unexpected state: " + StrI(state)
+    endif
+    
+    print "4"
+    
+    screen = CreateObject("roScreen")
     m.port = CreateObject("roMessagePort")
     screen.setMessagePort(m.port)
 
     rolls = CreateObject("roAssociativeArray")    
     
-    count = 8
+
     for i = 1 to count Step 1
         rolls[StrI(i)] = 0
     end for
@@ -20,17 +111,6 @@ sub showChannelSGScreen()
         roll = Rnd(count)
         rolls[StrI(roll)] = rolls[StrI(roll)] + 1
     end for
- 
-'    msg = ""
-'    winner = ""
-'    winning_total = -1
-'    for k = 1 to count Step 1
-'        msg = msg + StrI(k) + " rolled " + StrI(rolls[StrI(k)]) + " times." + chr(10)
-'        if(rolls[StrI(k)] > winning_total)
-'            winner = StrI(k)
-'            winning_total = rolls[StrI(k)] 
-'        end if
-'    end for
 
     minVal = 2000000000
     maxVal = -1

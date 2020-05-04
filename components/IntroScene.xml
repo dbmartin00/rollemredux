@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--********** Copyright 2016 Roku Corp. All Rights Reserved. ********** -->
+
+<component name="IntroScene" extends="Scene"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd">
+	<children>
+		<Label id="myLabel" text="How many sides?" width="1280"
+			height="720" horizAlign="center" vertAlign="center" />
+		
+	</children>
+	<!-- importing main handler -->
+	<script type="text/brightscript"
+		uri="pkg:/components/IntroScene.brs" />
+</component>
