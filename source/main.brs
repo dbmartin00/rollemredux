@@ -1,5 +1,3 @@
-' ********** Copyright 2016 Roku Corp.  All Rights Reserved. ********** 
-
 sub Main()
     showChannelSGScreen()
 end sub
@@ -21,16 +19,13 @@ sub showChannelSGScreen()
     font = fontRegistry.GetDefaultFont()
     instructionFont = fontRegistry.GetDefaultFont(90,true,false)
     
-    print "1"
     number_width = width / 4  
     number_height = height / 2
      screen.finish()
-  
-    print "2"
-    print "3"
     state = 2
     notFinished = true
     offset = 40
+    print "Entering CHOOSE A DIE rendering loop"
     while notFinished
         screen.DrawRect(0, 0, width,height,white)  
         screen.DrawText("CHOOSE A DIE",width / 4 + 100, height / 4,blue, instructionFont)
@@ -54,6 +49,7 @@ sub showChannelSGScreen()
         screen.DrawText("20", (number_width * 3) + (number_width / 2), number_height, black, font)   
         screen.finish()
         
+        print "Entering CHOOSE A DIE input loop"
         msg = wait(0, port) ' wait for a message
         if type(msg) = "roUniversalControlEvent" then
             if(msg.isPress()) then
@@ -76,6 +72,8 @@ sub showChannelSGScreen()
                     endif
                 else if msg.getKey() = 6
                     notFinished = false
+                else if msg.getKey() = 0
+                    return
                 endif
             endif         
         endif
@@ -184,12 +182,24 @@ sub showChannelSGScreen()
     end for
             
     screen.DrawText("The winner is " + StrI(max) + " with " + StrI(rolls[StrI(max)]) + " rolls!", (width / 2) - 500, 25, red, font)
+    print "Just before screen.Finish()"
     screen.Finish()
     
-    while(true)
-        msg = wait(0, m.port)
-        msgType = type(msg)
-        print msgType
-        return
+    print "Entering exit loop"
+    port = CreateObject("roMessagePort")
+    screen.SetMessagePort(port)
+    
+    notFinished = true
+    while notFinished        
+        msg = wait(0, port)
+        if type(msg) = "roUniversalControlEvent" then
+            if(msg.isPress()) then
+                print "key:" + StrI(msg.GetKey())
+                notFinished = false
+            endif         
+        else
+            print "finishing on msg: " + StrI(msg.GetKey())
+            notFinished = false
+        endif
     end while
 end sub

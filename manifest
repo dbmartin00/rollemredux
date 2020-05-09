@@ -11,4 +11,4 @@ splash_screen_sd=pkg:/images/splash_sd-rollem.png
 splash_color=#000000
 splash_min_time=3000
 ui_resolutions=sd,hd,fhd
-splash_rsg_optimization=1
+
